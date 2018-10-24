@@ -10,8 +10,6 @@ import java.net.*;
 // ClientHandler class
 class ClientHandler extends Thread
 {
-    DateFormat fordate = new SimpleDateFormat("yyyy/MM/dd");
-    DateFormat fortime = new SimpleDateFormat("hh:mm:ss");
     final DataInputStream dis;
     final DataOutputStream dos;
     final DatagramSocket s;

@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 public class Server {
 
     private static String ip;
-    final static int PORT = 8888;
+    final static int[] PORT = {8888,8889,8890,8891};
 
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
         //ip = args[0];
@@ -18,15 +18,13 @@ public class Server {
 
         // Open a new DatagramSocket, which will be used to send the data.
         try (DatagramSocket serverSocket = new DatagramSocket()) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 4; i++) {
                 String msg = "Sent message no " + i;
 
-                // Create a packet that will contain the data
-                // (in the form of bytes) and send it.
                 DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
-                        msg.getBytes().length, addr, PORT);
+                        msg.getBytes().length, addr, PORT[i]);
                 serverSocket.send(msgPacket);
-
+                
                 System.out.println("Server sent packet with msg: " + msg);
                 Thread.sleep(2000);
             }
