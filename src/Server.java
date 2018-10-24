@@ -3,7 +3,7 @@ import java.net.*;
 public class Server {
 
     private static String ip;
-    final static int[] PORT = {8888,8889,8890,8891};
+    final static int[] PORT = {10111,10112,10113,10114};
 
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
         //ip = args[0];
