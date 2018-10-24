@@ -1,9 +1,5 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
+import java.net.*;
 public class Server {
 
     private static String ip;
@@ -16,7 +12,6 @@ public class Server {
         // Get the address that we are going to connect to.
         InetAddress addr = InetAddress.getByName(ip);
 
-        // Open a new DatagramSocket, which will be used to send the data.
         try (DatagramSocket serverSocket = new DatagramSocket()) {
             for (int i = 0; i < 4; i++) {
                 String msg = "Sent message no " + i;
@@ -30,7 +25,10 @@ public class Server {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
+
 
