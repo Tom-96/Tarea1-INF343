@@ -1,9 +1,5 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
+import java.net.*;
 public class Server {
 
     private static String ip;
@@ -16,23 +12,29 @@ public class Server {
         // Get the address that we are going to connect to.
         InetAddress addr = InetAddress.getByName(ip);
 
-        // Open a new DatagramSocket, which will be used to send the data.
         try (DatagramSocket serverSocket = new DatagramSocket()) {
-            for (int i = 0; i < 5; i++) {
-                String msg = "Sent message no " + i;
 
-                // Create a packet that will contain the data
-                // (in the form of bytes) and send it.
-                DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
-                        msg.getBytes().length, addr, PORT);
-                serverSocket.send(msgPacket);
+            String msg = "ESTOY ENVIANDO UN MENSAJE :V";
 
-                System.out.println("Server sent packet with msg: " + msg);
-                Thread.sleep(2000);
-            }
+            // Create a packet that will contain the data
+            // (in the form of bytes) and send it.
+            DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
+                    msg.getBytes().length, addr, PORT);
+            DatagramPacket msgPacket2 = new DatagramPacket(msg.getBytes(),
+                    msg.getBytes().length, addr, 8889);
+            serverSocket.send(msgPacket);
+            serverSocket.send(msgPacket2);
+
+
+            System.out.println("Server sent packet with msg: " + msg);
+            Thread.sleep(2000);
+
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
+
 
