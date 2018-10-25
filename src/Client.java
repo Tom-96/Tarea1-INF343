@@ -27,7 +27,9 @@ public class Client {
                 thread.start();
             }
         }
-        final String HOST = "127.0.0.1";
+        
+        if (historialBool.equals("1")) {
+            final String HOST = "127.0.0.1";
             final int PUERTO = 8000;
             DataInputStream in;
             DataOutputStream out;
@@ -46,8 +48,6 @@ public class Client {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        if (historialBool.equals("1")) {
-            System.out.println("HOOOOOOOOOOOOOOOLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAA");
         }
     }
 }
