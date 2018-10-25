@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.Random;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 class ServerThread extends Thread {
     final String ip;
@@ -17,6 +19,11 @@ class ServerThread extends Thread {
     @Override
     public void run() {
         InetAddress address = null;
+        String filename = "historial.txt";
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+        int id = 0;
+
         try {
             address = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
@@ -27,14 +34,22 @@ class ServerThread extends Thread {
             Random rand = new Random();
             int n = 0;
             while(true){
+                id = id + 1;
                 n = rand.nextInt(100);
-                String msg = nombre+ ": " +"Puerto: " +PORT+" Valor: "+ n;
+                String msg = id + ". " + nombre+ ": " +"Puerto: " +PORT+" Valor: "+ n;
+
+                //escribir historial en archivo
+                fw = new FileWriter(filename, true);
+                bw = new BufferedWriter(fw);
+                bw.write(msg + "\n");
+                bw.close();
+                fw.close();
 
                 DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
                         msg.getBytes().length, address, PORT);
                 serverSocket.send(msgPacket);
-                
                 System.out.println(msg);
+
                 Thread.sleep(2000);
             }
             
@@ -42,6 +57,21 @@ class ServerThread extends Thread {
             ex.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+
+            try {
+
+                if (bw != null)
+                    bw.close();
+
+                if (fw != null)
+                    fw.close();
+
+            } catch (IOException ex) {
+
+                ex.printStackTrace();
+
+            }
         }
     }
 }
