@@ -11,7 +11,7 @@ public class Server {
         ip = "224.0.0.3";
         System.out.println("ip: " + ip);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             //intanciar thread
             Thread thread = new ServerThread(ip,PORT[i],NOMBRES[i]);
             thread.start();

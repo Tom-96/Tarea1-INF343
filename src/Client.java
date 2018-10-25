@@ -18,7 +18,6 @@ public class Client {
         for (int i = 0; i < suscripciones.length (); i++) { 
             char c = suscripciones.charAt (i);
             if (c=='1'){
-                System.out.println (c);
                 //Crear thread
                 Thread thread = new ClientThread(ip,PORT[i]);
                 thread.start();
