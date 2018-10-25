@@ -4,13 +4,13 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
-class ClientHandler extends Thread {
+class ClientThread extends Thread {
     final String ip;
     final int PORT;
 
 
     // Constructor
-    public ClientHandler(String ip, int PORT) {
+    public ClientThread(String ip, int PORT) {
         this.ip = ip;
         this.PORT = PORT;
     }
@@ -35,12 +35,10 @@ class ClientHandler extends Thread {
                 clientSocket.receive(msgPacket);
 
                 String msg = new String(buf, 0, buf.length);
-                System.out.println("Socket 1 received msg: " + msg);
+                System.out.println(msg);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-
     }
 }

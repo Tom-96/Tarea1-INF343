@@ -11,16 +11,17 @@ public class Client {
 
     public static void main(String[] args) throws UnknownHostException {
         String ip = args[0]; 
-        String mediciones = args[1];
-        String anteriores = args[2];
+        String suscripciones = args[1];
+        String historialBool = args[2];
         
         // Suscripción a variables 
-        for (int i = 0; i < mediciones.length (); i++) { 
-            char c = mediciones.charAt (i);
+        for (int i = 0; i < suscripciones.length (); i++) { 
+            char c = suscripciones.charAt (i);
             if (c=='1'){
                 System.out.println (c);
                 //Crear thread
-                Thread thread = new ClientHandler(ip,PORT[i]);
+                Thread thread = new ClientThread(ip,PORT[i]);
+                thread.start();
             }
         }
     }
