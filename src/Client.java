@@ -1,7 +1,11 @@
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
@@ -18,11 +22,32 @@ public class Client {
         for (int i = 0; i < suscripciones.length (); i++) { 
             char c = suscripciones.charAt (i);
             if (c=='1'){
-                System.out.println (c);
                 //Crear thread
                 Thread thread = new ClientThread(ip,PORT[i]);
                 thread.start();
             }
+        }
+        final String HOST = "127.0.0.1";
+            final int PUERTO = 8000;
+            DataInputStream in;
+            DataOutputStream out;
+            try {
+                Socket sc = new Socket(HOST,PUERTO);
+                in = new DataInputStream(sc.getInputStream());
+                out = new DataOutputStream(sc.getOutputStream());
+
+                out.writeUTF("Hola mundo desde el cliente");
+                
+                String mensaje  = in.readUTF();
+                
+                System.out.println(mensaje);
+
+                sc.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        if (historialBool.equals("1")) {
+            System.out.println("HOOOOOOOOOOOOOOOLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAA");
         }
     }
 }
