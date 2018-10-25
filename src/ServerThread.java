@@ -38,17 +38,17 @@ class ServerThread extends Thread {
                 n = rand.nextInt(100);
                 String msg = id + ". " + nombre+ ": " +"Puerto: " +PORT+" Valor: "+ n;
 
-                DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
-                        msg.getBytes().length, address, PORT);
-                serverSocket.send(msgPacket);
-                System.out.println(msg);
-
                 //escribir historial en archivo
                 fw = new FileWriter(filename, true);
                 bw = new BufferedWriter(fw);
                 bw.write(msg + "\n");
                 bw.close();
                 fw.close();
+
+                DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
+                        msg.getBytes().length, address, PORT);
+                serverSocket.send(msgPacket);
+                System.out.println(msg);
 
                 Thread.sleep(2000);
             }
