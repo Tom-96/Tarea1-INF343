@@ -6,11 +6,11 @@ import java.io.FileWriter;
 
 class ServerThread extends Thread {
     final String ip;
-    final int PORT;
-    final String nombre;
+    final int[] PORT;
+    final String[] nombre;
 
     // Constructor
-    public ServerThread(String ip, int PORT,String nombre) {
+    public ServerThread(String ip, int[] PORT,String[] nombre) {
         this.ip = ip;
         this.PORT = PORT;
         this.nombre = nombre;
@@ -32,23 +32,41 @@ class ServerThread extends Thread {
 
         try (DatagramSocket serverSocket = new DatagramSocket()) {
             Random rand = new Random();
-            int n = 0;
+            int n1 = 0;
+            int n2 = 0;
+            int n3 = 0;
             while(true){
                 id = id + 1;
-                n = rand.nextInt(100);
-                String msg = id + ". " + nombre+ ": " +"Puerto: " +PORT+" Valor: "+ n;
+                n1 = rand.nextInt(100);
+                n2 = rand.nextInt(100);
+                n3 = rand.nextInt(100);
+
+                String msg1 = id + ". " + nombre[0]+ ": " +"Puerto: " +PORT[0]+" Valor: "+ n1;
+                String msg2 = id + ". " + nombre[1]+ ": " +"Puerto: " +PORT[1]+" Valor: "+ n2;
+                String msg3 = id + ". " + nombre[2]+ ": " +"Puerto: " +PORT[2]+" Valor: "+ n3;
 
                 //escribir historial en archivo
                 fw = new FileWriter(filename, true);
                 bw = new BufferedWriter(fw);
-                bw.write(msg + "\n");
+                bw.write(msg1 + "\n");
+                bw.write(msg2 + "\n");
+                bw.write(msg3 + "\n");
                 bw.close();
                 fw.close();
 
-                DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
-                        msg.getBytes().length, address, PORT);
-                serverSocket.send(msgPacket);
-                System.out.println(msg);
+                DatagramPacket msgPacket1 = new DatagramPacket(msg1.getBytes(),
+                        msg1.getBytes().length, address, PORT[0]);
+                serverSocket.send(msgPacket1);
+                DatagramPacket msgPacket2 = new DatagramPacket(msg2.getBytes(),
+                        msg2.getBytes().length, address, PORT[1]);
+                serverSocket.send(msgPacket2);
+                DatagramPacket msgPacket3 = new DatagramPacket(msg3.getBytes(),
+                        msg3.getBytes().length, address, PORT[2]);
+                serverSocket.send(msgPacket3);
+
+                System.out.println(msg1);
+                System.out.println(msg2);
+                System.out.println(msg3);
 
                 Thread.sleep(2000);
             }

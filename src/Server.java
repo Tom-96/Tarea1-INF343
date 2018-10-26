@@ -20,11 +20,10 @@ public class Server {
         DataOutputStream out;
 
 
-        for (int i = 0; i < 3; i++) {
-            //intanciar thread
-            Thread thread = new ServerThread(ip,PORT[i],NOMBRES[i]);
-            thread.start();
-        }
+        //intanciar thread
+        Thread thread = new ServerThread(ip,PORT,NOMBRES);
+        thread.start();
+
 
         try {
             server = new ServerSocket(PUERTO);
@@ -32,7 +31,7 @@ public class Server {
 
             while(true){
                 sc = server.accept();
-                
+
                 in = new DataInputStream(sc.getInputStream());
                 out = new DataOutputStream(sc.getOutputStream());
 
@@ -46,6 +45,6 @@ public class Server {
             }
         } catch (IOException ex){
             ex.printStackTrace();
-        }        
+        }
     }
 }

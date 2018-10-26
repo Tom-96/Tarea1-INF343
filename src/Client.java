@@ -10,8 +10,7 @@ import java.net.UnknownHostException;
 
 public class Client {
 
-    final static String INET_ADDR = "224.0.0.3";
-    final static int[] PORT = {10111,10112,10113,10114};
+    public static int[] PORT = {10111,10112,10113,10114};
 
     public static void main(String[] args) throws UnknownHostException {
         String ip = args[0]; 
@@ -19,7 +18,7 @@ public class Client {
         String historialBool = args[2];
         
         // Suscripción a variables 
-        for (int i = 0; i < suscripciones.length (); i++) { 
+        for (int i = 0; i < suscripciones.length (); i++) {
             char c = suscripciones.charAt (i);
             if (c=='1'){
                 //Crear thread
@@ -27,7 +26,7 @@ public class Client {
                 thread.start();
             }
         }
-        
+
         if (historialBool.equals("1")) {
             final String HOST = "127.0.0.1";
             final int PUERTO = 8000;
