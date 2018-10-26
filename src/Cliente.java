@@ -8,25 +8,12 @@ import java.net.MulticastSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client {
+public class Cliente {
 
     public static int[] PORT = {10111,10112,10113,10114};
 
     public static void main(String[] args) throws UnknownHostException {
-        String ip = args[0]; 
-        String suscripciones = args[1];
-        String historialBool = args[2];
-        
-        // Suscripción a variables 
-        for (int i = 0; i < suscripciones.length (); i++) {
-            char c = suscripciones.charAt (i);
-            if (c=='1'){
-                //Crear thread
-                Thread thread = new ClientThread(ip,PORT[i]);
-                thread.start();
-            }
-        }
-
+        String historialBool = args[0];
         if (historialBool.equals("1")) {
             final String HOST = "127.0.0.1";
             final int PUERTO = 8000;
@@ -40,8 +27,12 @@ public class Client {
                 out.writeUTF("Hola mundo desde el cliente");
                 
                 String mensaje  = in.readUTF();
-                
-                System.out.println(mensaje);
+                int largoHistorial = Integer.parseInt(mensaje);
+
+                for(int i = 0; i < largoHistorial; i++){
+                    mensaje = in.readUTF();
+                    System.out.println(mensaje);
+                }
 
                 sc.close();
             } catch (Exception e) {
