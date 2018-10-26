@@ -50,7 +50,7 @@ class ServerThread extends Thread {
                 serverSocket.send(msgPacket);
                 System.out.println(msg);
 
-                Thread.sleep(2000);
+                Thread.sleep(5000);
             }
             
         } catch (IOException ex) {
