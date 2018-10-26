@@ -3,6 +3,7 @@ import java.net.*;
 import java.util.Random;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.concurrent.locks.*;
 
 class ServerThread extends Thread {
     final String ip;
@@ -23,6 +24,8 @@ class ServerThread extends Thread {
         BufferedWriter bw = null;
         FileWriter fw = null;
         int id = 0;
+        ReadWriteLock rwLock = new ReentrantReadWriteLock();
+        Lock writeLock = rwLock.writeLock();
 
         try {
             address = InetAddress.getByName(ip);
@@ -35,6 +38,9 @@ class ServerThread extends Thread {
             int n1 = 0;
             int n2 = 0;
             int n3 = 0;
+
+            fw = new FileWriter(filename);
+            fw.close();
             while(true){
                 id = id + 1;
                 n1 = rand.nextInt(100);
@@ -45,14 +51,21 @@ class ServerThread extends Thread {
                 String msg2 = id + ". " + nombre[1]+ ": " +"Puerto: " +PORT[1]+" Valor: "+ n2;
                 String msg3 = id + ". " + nombre[2]+ ": " +"Puerto: " +PORT[2]+" Valor: "+ n3;
 
-                //escribir historial en archivo
-                fw = new FileWriter(filename, true);
-                bw = new BufferedWriter(fw);
-                bw.write(msg1 + "\n");
-                bw.write(msg2 + "\n");
-                bw.write(msg3 + "\n");
-                bw.close();
-                fw.close();
+                writeLock.lock();
+                try {
+                    //escribir historial en archivo
+                    fw = new FileWriter(filename, true);
+                    bw = new BufferedWriter(fw);
+                    bw.write(msg1 + "\n");
+                    bw.write(msg2 + "\n");
+                    bw.write(msg3 + "\n");
+                    bw.close();
+                    fw.close();
+                } finally {
+
+                    writeLock.unlock();
+                }
+
 
                 DatagramPacket msgPacket1 = new DatagramPacket(msg1.getBytes(),
                         msg1.getBytes().length, address, PORT[0]);
@@ -68,7 +81,7 @@ class ServerThread extends Thread {
                 System.out.println(msg2);
                 System.out.println(msg3);
 
-                Thread.sleep(5000);
+                Thread.sleep(2000);
             }
             
         } catch (IOException ex) {
