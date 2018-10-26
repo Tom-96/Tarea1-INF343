@@ -18,18 +18,10 @@ public class Client {
         String historialBool = args[2];
         
         // Suscripción a variables 
-        for (int i = 0; i < suscripciones.length (); i++) {
-            char c = suscripciones.charAt (i);
-            if (c=='1'){
-                //Crear thread
-                Thread thread = new ClientThread(ip,PORT[i]);
-                thread.start();
-            }
-        }
 
         if (historialBool.equals("1")) {
             final String HOST = "127.0.0.1";
-            final int PUERTO = 8000;
+            final int PUERTO = 9000;
             DataInputStream in;
             DataOutputStream out;
             try {
@@ -37,9 +29,10 @@ public class Client {
                 in = new DataInputStream(sc.getInputStream());
                 out = new DataOutputStream(sc.getOutputStream());
 
-                out.writeUTF("Hola mundo desde el cliente");
+                out.writeUTF(suscripciones);
 
                 String mensaje  = in.readUTF();
+                System.out.println(mensaje);
                 int largoHistorial = Integer.parseInt(mensaje);
 
                 for(int i = 0; i < largoHistorial; i++){
@@ -50,6 +43,14 @@ public class Client {
                 sc.close();
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < suscripciones.length (); i++) {
+            char c = suscripciones.charAt (i);
+            if (c=='1'){
+                //Crear thread
+                Thread thread = new ClientThread(ip,PORT[i]);
+                thread.start();
             }
         }
     }

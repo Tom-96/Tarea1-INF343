@@ -81,9 +81,8 @@ class ServerThread extends Thread {
                 System.out.println(msg2);
                 System.out.println(msg3);
 
-                Thread.sleep(2000);
+                Thread.sleep(4000);
             }
-            
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (InterruptedException e) {

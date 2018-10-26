@@ -7,7 +7,7 @@ public class Server {
     private static String ip;
     final static int[] PORT = {10111,10112,10113};
     final static String[] NOMBRES = {"Temperatura","Presion","Humedad"};
-    private static int PUERTO = 8000;
+    private static int PUERTO = 9000;
 
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
         ip = args[0];
@@ -17,7 +17,6 @@ public class Server {
         Socket sc;
         DataInputStream in;
         DataOutputStream out;
-
 
         //intanciar thread
         Thread thread = new ServerThread(ip,PORT,NOMBRES);
@@ -38,7 +37,17 @@ public class Server {
                 out = new DataOutputStream(sc.getOutputStream());
 
                 String mensaje = in.readUTF();
-                System.out.println("Enviando historial a "+ mensaje);
+                System.out.println("Enviando historial");
+                
+                boolean[] sub = new boolean[mensaje.length()];
+                for (int i = 0; i < mensaje.length (); i++) {
+                    char c = mensaje.charAt (i);
+                    if (c=='1'){
+                        sub[i]= true;
+                    } else {
+                        sub[i] = false;
+                    }
+                }
 
                 readLock.lock();
                 try {
@@ -47,23 +56,29 @@ public class Server {
                     BufferedReader b = new BufferedReader(f);
 
                     int num_lines = 0;
-                    while((b.readLine())!=null) {
-                        num_lines ++;
+                    while((cadena = b.readLine())!=null) {
+                        for (int i = 0; i < 3;i++){
+                            if (sub[i] && NOMBRES[i].equals(cadena.split(":")[0].split(" ")[1])){
+                                num_lines++;
+                            }
+                        }
                     }
                     b.close();
-
                     f = new FileReader("historial.txt");
                     b = new BufferedReader(f);
-
                     out.writeUTF(Integer.toString(num_lines));
                     while((cadena = b.readLine())!=null) {
-                        out.writeUTF(cadena);
+                        for (int i = 0; i < 3;i++){
+                            if (sub[i] && NOMBRES[i].equals(cadena.split(":")[0].split(" ")[1])){
+                                System.out.println(cadena.split(":")[0].split(" ")[1]);
+                                out.writeUTF(cadena);
+                            }
+                        }
                     }
                     b.close();
                     sc.close();
                     System.out.println("Historial enviado");
                 } finally {
-
                     readLock.unlock();
                 }
             }
