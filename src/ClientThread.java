@@ -29,13 +29,14 @@ class ClientThread extends Thread {
         try (MulticastSocket clientSocket = new MulticastSocket(PORT)) {
             //Joint the Multicast group.
             clientSocket.joinGroup(address);
-
             while (true) {
+                //System.out.println(PORT);
                 DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
                 clientSocket.receive(msgPacket);
 
                 String msg = new String(buf, 0, buf.length);
                 System.out.println(msg);
+
             }
         } catch (IOException ex) {
             ex.printStackTrace();
