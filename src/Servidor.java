@@ -17,7 +17,7 @@ public class Servidor {
         Socket sc;
         DataInputStream in;
         DataOutputStream out;
-        int i = 1449*3;
+        int i = 1449*3;//Número de lineas de historial.txt
 
         try {
             server = new ServerSocket(PUERTO);
@@ -30,7 +30,8 @@ public class Servidor {
                 out = new DataOutputStream(sc.getOutputStream());
 
                 String mensaje = in.readUTF();
-                System.out.println("Enviando historial a "+ mensaje);
+                
+                System.out.println("Enviando historial");
                 
                 String cadena;
                 FileReader f = new FileReader("historial.txt");
