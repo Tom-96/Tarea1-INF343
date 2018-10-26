@@ -1,8 +1,7 @@
-import java.io.DataInputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
+import java.util.concurrent.locks.*;
+
 public class Server {
 
     private static String ip;
@@ -24,6 +23,9 @@ public class Server {
         Thread thread = new ServerThread(ip,PORT,NOMBRES);
         thread.start();
 
+        ReadWriteLock rwLock = new ReentrantReadWriteLock();
+        Lock readLock = rwLock.readLock();
+        Lock writeLock = rwLock.writeLock();
 
         try {
             server = new ServerSocket(PUERTO);
@@ -36,12 +38,34 @@ public class Server {
                 out = new DataOutputStream(sc.getOutputStream());
 
                 String mensaje = in.readUTF();
+                System.out.println("Enviando historial a "+ mensaje);
 
-                System.out.println(mensaje);
-                out.writeUTF("Hola mundo desde el servidor");
+                readLock.lock();
+                try {
+                    String cadena;
+                    FileReader f = new FileReader("historial.txt");
+                    BufferedReader b = new BufferedReader(f);
 
-                sc.close();
-                System.out.println("Cliente desconectado");
+                    int num_lines = 0;
+                    while((b.readLine())!=null) {
+                        num_lines ++;
+                    }
+                    b.close();
+
+                    f = new FileReader("historial.txt");
+                    b = new BufferedReader(f);
+
+                    out.writeUTF(Integer.toString(num_lines));
+                    while((cadena = b.readLine())!=null) {
+                        out.writeUTF(cadena);
+                    }
+                    b.close();
+                    sc.close();
+                    System.out.println("Historial enviado");
+                } finally {
+
+                    readLock.unlock();
+                }
             }
         } catch (IOException ex){
             ex.printStackTrace();

@@ -38,10 +38,14 @@ public class Client {
                 out = new DataOutputStream(sc.getOutputStream());
 
                 out.writeUTF("Hola mundo desde el cliente");
-                
+
                 String mensaje  = in.readUTF();
-                
-                System.out.println(mensaje);
+                int largoHistorial = Integer.parseInt(mensaje);
+
+                for(int i = 0; i < largoHistorial; i++){
+                    mensaje = in.readUTF();
+                    System.out.println(mensaje);
+                }
 
                 sc.close();
             } catch (Exception e) {
